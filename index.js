@@ -5,8 +5,7 @@ const app = express();
 const { PORT } = require("./src/configs/config");
 const auth = require("./src/routes/auth");
 const passport = require("passport");
-// const users = require('./src/services/UsersService');
-const users = require('./src/db/dbConfig');
+const users = require('./src/services/UsersService');
 
 app.use(bodyParser.json())
 app.use(
@@ -15,13 +14,19 @@ app.use(
   })
 )
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
-app.get('/user/:id', users.getUserById)
+app.get('/', (req, res) => {
+  res.status(200).json('Online')
+})
 
-console.log(users.getUserById())
+app.use('/login/', auth);
+app.get('/user/:id', users.getUserById);
+app.get('/user/', users.getAllUsers);
 
-app.use("/login", auth);
+// console.log(users.getUserById())
+
+// app.use("/login", auth);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

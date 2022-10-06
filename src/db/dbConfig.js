@@ -9,23 +9,9 @@ const client = new Client({
   port: DB.PGPORT,
 });
 
-client.connect(function(err) {
+client.connect(function (err) {
   if (err) throw err;
-  console.log("Conectado com Banco")
+  console.log("Conectado com Banco");
 });
 
-const getUserById = (req, res) => {
-  console.log('teste function')
-  const id = parseInt(2)
-  client.query('SELECT * FROM users WHERE id_user = $1', [id], (error, results) => {
-    if(error) {
-      console.log('erro')
-      throw error
-    }
-    console.log(results.rows)
-    // res.status(200).json(results.rows)
-  })
-}
-
-
-module.exports = {client, getUserById};
+module.exports = client ;
