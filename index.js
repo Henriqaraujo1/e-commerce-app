@@ -1,33 +1,16 @@
-const express = require("express");
-const bodyParser = require('body-parser')
+const express = require('express')
+const app = express()
 require("dotenv").config({ path: "./src/configs/example.env" });
-const app = express();
+const controllers = require('./src/controllers/index')
+
 const { PORT } = require("./src/configs/config");
-const auth = require("./src/routes/auth");
-const passport = require("passport");
-const users = require('./src/services/UsersService');
 
-app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
+async function startServer() {
+ controllers(app);
 
-// app.use(passport.initialize());
+ app.listen(PORT, () => {
+    console.log(`Servidor está rodando na PORTA ${PORT}`)
+ })
+}
 
-app.get('/', (req, res) => {
-  res.status(200).json('Online')
-})
-
-app.use('/login/', auth);
-app.get('/user/:id', users.getUserById);
-app.get('/user/', users.getAllUsers);
-
-// console.log(users.getUserById())
-
-// app.use("/login", auth);
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+startServer();

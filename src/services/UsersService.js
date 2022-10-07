@@ -2,22 +2,22 @@ const client = require("../db/dbConfig");
 const bcrypt = require("bcrypt");
 
 const emailExists = async (email) => {
-  const data = await client.query("SELECT * FROM users WHERE email=$1", [
-    email,
-  ]);
-
-  if (data.rowCount == 0) {
-    return false;
+  try {
+    const data = await client.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
+    if (data.rowCount == 0) {
+      return false;
+    }
+    return data.rows[0];
+  } catch (error) {
+    throw new Error(error, 'hahahha')
   }
-
-  return data.rows[0];
 };
 
 const createUser = async (email, password) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-
-  console.log("createuser rodou");
 
   const data = await client.query(
     "INSERT INTO users(email, password) VALUES ($1, $2)",
@@ -25,7 +25,7 @@ const createUser = async (email, password) => {
   );
 
   if (data.rowCount == 0) {
-    console.log("erro de criar usuario");
+    return false;
   }
   return data.rows[0];
 };
@@ -62,6 +62,10 @@ const getAllUsers = (req, res) => {
     }
   });
 };
+
+const deleteAllUsers = (req, res) => {
+  
+}
 
 module.exports = {
   emailExists,
