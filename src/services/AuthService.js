@@ -5,12 +5,13 @@ const { emailExists, createUser, matchPassword } = require("./UsersService");
 
 module.exports = class AuthService {
     async signup(data) {
-      const { email, password} = data;
+      const { email, password } = data;
 
       try {
         const userExists = await emailExists(email)
         if(userExists) {
-          throw createError(409, 'Email ja existe')
+          console.log(userExists)
+          throw createError(409, `Email já existe`);
         }
 
         const user = createUser(email, password);
@@ -21,23 +22,24 @@ module.exports = class AuthService {
     };
 
     async login(data) {
-      const {email, password} = data
+      const { email, password } = data
 
       try {
         const user = emailExists(email);
         if(!user) { 
           throw createError(401, "Email ou senha incorreto")
-        } 
-        passwordCompare = await matchPassword(password, user.password)
-        
+        }
+        const passwordCompare = await matchPassword(email, password)
         if (!passwordCompare) {
-          throw createError(401, "Email ou senha incorreto")
+          console.log("aqui ta o erro crash")
+          throw createError(401, "Email ou senha incorreto 2")
         }
 
         return user
 
-      } catch (error) {
-        throw createError(500, error)
+      } catch (err) {
+        console.log(err);
+        
       }
     }
 }
@@ -65,8 +67,6 @@ module.exports = class AuthService {
 //         } catch (error) {
 //           return createError(500, error);
 //         }
-//       }
-//     )
 //   );
 //   passport.use(
 //     "local-login",

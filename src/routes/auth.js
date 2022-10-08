@@ -16,8 +16,12 @@ module.exports = (app, passport) => {
     try {
       const data = req.body;
       const response = await AuthServiceInstance.signup(data);
-      res.status(200).json({message: "usuario criado com sucesso", response: response});
+      console.log('haha response');
+      res
+        .status(200)
+        .json({ message: "usuario criado com sucesso", response: data.email });
     } catch (error) {
+      res.status(409).send(`Email já existente`);
       next(error);
     }
   });
@@ -27,10 +31,9 @@ module.exports = (app, passport) => {
     passport.authenticate("local"),
     async (req, res, next) => {
       try {
-        const { username, password } = req.body;
-
+        const { email, password } = req.body;
         const response = await AuthServiceInstance.login({
-          email: username,
+          email: email,
           password,
         });
 

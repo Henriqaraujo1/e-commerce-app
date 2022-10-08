@@ -1,5 +1,9 @@
 const client = require("../db/dbConfig");
 const bcrypt = require("bcrypt");
+const createError = require("http-errors")
+
+const EncryptUtil = require("../utils/bcrypt");
+const EncryptUtilInstance = new EncryptUtil();
 
 const emailExists = async (email) => {
   try {
@@ -10,18 +14,16 @@ const emailExists = async (email) => {
       return false;
     }
     return data.rows[0];
-  } catch (error) {
-    throw new Error(error, 'hahahha')
+  } catch (err) {
+    throw createError(500, "erro Interno")
   }
 };
 
 const createUser = async (email, password) => {
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-
+  const encryptPassword = await EncryptUtilInstance.encrypt(password);
   const data = await client.query(
     "INSERT INTO users(email, password) VALUES ($1, $2)",
-    [email, hash]
+    [email, encryptPassword]
   );
 
   if (data.rowCount == 0) {
@@ -30,9 +32,19 @@ const createUser = async (email, password) => {
   return data.rows[0];
 };
 
-const matchPassword = async (password, hashPassword) => {
-  const match = await bcrypt.compare(password, hashPassword);
+const matchPassword = async (email, password) => {
+  const userPassword = await client.query(
+    "SELECT password FROM users WHERE email= $1",
+    [email]
+  );
+  if (userPassword.rowCount == 0) {
+    return false;
+  }
 
+  const comparePassword = userPassword.rows[0].password;
+
+  const match = await bcrypt.compare(password, comparePassword);
+  // console.log(match)
   return match;
 };
 
@@ -64,8 +76,8 @@ const getAllUsers = (req, res) => {
 };
 
 const deleteAllUsers = (req, res) => {
-  
-}
+  client.query("DELETE * FROM users");
+};
 
 module.exports = {
   emailExists,
