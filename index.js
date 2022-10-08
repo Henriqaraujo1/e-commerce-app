@@ -1,22 +1,15 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { response } = require("express");
-const app = express();
-const { PORT } = require('./src/configs/config');
+const express = require('express')
+const app = express()
+require("dotenv").config({ path: "./src/configs/example.env" });
+const controllers = require('./src/controllers/index')
 
-app.use(bodyParser.json());
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-)
+const { PORT } = require("./src/configs/config");
 
-app.get('/', (req, res) => {
-    response.json({info: 'E-commerce with Express and Postgres'})
-})
+async function startServer() {
+ controllers(app);
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
-
+ app.listen(PORT, () => {
+    console.log(`Servidor está rodando na PORTA ${PORT}`)
+ })
+}
 startServer();
