@@ -9,13 +9,13 @@ module.exports = class AuthService {
       const userExists = await emailExists(email);
       console.log(userExists);
       if (userExists) {
-        throw createError(409, `Email já existe`);
-      } else {
-        const user = createUser(email, password);
-        return user;
+        return createError(409, `Email já existe`);
       }
-    } catch (error) {
-      throw createError(500, error);
+      const user = createUser(email, password);
+      console.log
+      return user;
+    } catch (err) {
+      throw createError(500, err);
     }
   }
 
@@ -29,9 +29,9 @@ module.exports = class AuthService {
       }
       const passwordCompare = await matchPassword(email, password);
       if (!passwordCompare) {
-        throw createError(401, "Email ou senha incorreto 2")
+        throw createError(401, "Email ou senha incorreto 2");
       }
-      return user
+      return user;
     } catch (err) {
       throw (500, err);
     }

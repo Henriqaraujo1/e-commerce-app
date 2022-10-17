@@ -6,7 +6,7 @@ CREATE TABLE permissions (
 CREATE TABLE users (
   "id_user" SERIAL PRIMARY KEY NOT NULL,
   "name" VARCHAR(50) NOT NULL,
-  "e-mail" VARCHAR(100) NOT NULL,
+  "email" VARCHAR(100) NOT NULL,
   "password" VARCHAR(20) NOT NULL,
   "id_permission" INT NOT NULL
 );
