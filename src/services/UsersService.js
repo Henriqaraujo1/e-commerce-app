@@ -7,18 +7,19 @@ const { createReadStream } = require("fs");
 const EncryptUtilInstance = new EncryptUtil();
 
 const emailExists = async (email) => {
-  const values = email;
   try {
+    // const values = email;
     const data = await client.query("SELECT * FROM users WHERE email=$1", [
-      values,
+      email,
     ]);
-    if (data.rows?.length) {
-      return data.rows[0];
+    console.log(data.rows)
+    if (data.rows?.length === 0) {
+      return createError(404, "Usuario não encontrado");
     } else {
-      return createError(400, "Bad Request");
+      return data.rows[0];
     }
   } catch (err) {
-    throw createError(500, "erro Interno");
+    throw createError(500, err);
   }
 };
 
