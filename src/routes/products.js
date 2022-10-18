@@ -1,13 +1,35 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
 
 const ProductsServices = require("../services/ProductService");
 const ProductServiceInstance = new ProductsServices();
 
 module.exports = (app) => {
-    app.use("/products", router);
+  app.use("/products", router);
 
-    router.get("/products", async (req, res, next) => {
-        
-    })
-}
+  router.get("/", async (req, res, next) => {
+    try {
+      const product = await ProductServiceInstance.findProduct();
+
+      res.status(200).json(product);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.get("/:productId", async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+
+      const response = await ProductServiceInstance.findProductId(productId);
+      if (response) {
+        res.status(201).json(response);
+      }
+      if (response === undefined) {
+        res.status(404).json({ MessageError: "Product not register" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+};
