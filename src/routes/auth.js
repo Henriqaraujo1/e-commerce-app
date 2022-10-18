@@ -12,6 +12,7 @@ module.exports = (app, passport) => {
     try {
       const data = req.body;
       const response = await AuthServiceInstance.signup(data);
+      console.log(response)
       res.status(200).json({
         message: `Usuario criado com sucesso, E-mail utilizado ${response}`,
       });

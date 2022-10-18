@@ -4,7 +4,7 @@ const { readdirSync } = require("fs");
 const { stringify } = require("querystring");
 
 module.exports = class ProductService {
-  async findProduct(req, res) {
+  async findProduct(options) {
     try {
       client.query(
         "SELECT * FROM products ORDER BY id_prod",
@@ -21,17 +21,17 @@ module.exports = class ProductService {
     }
   }
 
-  async findProductName(data) {
-    const value = data;
+  async findProductId(data) {
+    const id = data;
     client.query(
-      `SELECT * FROM products WHERE name = ${value}`,
-      (err, productName) => {
+      `SELECT * FROM products WHERE id_product = ${id}`,
+      (err, productId) => {
         try {
           if (err) {
-            throw createError(404, "NOT FOUND");
+            return createError(404, err);
           }
-          if (productName.rows?.length) {
-            return productName.rows[0];
+          if (productId.rows?.length) {
+            return productId.rows[0];
           }
           return null;
         } catch (err) {

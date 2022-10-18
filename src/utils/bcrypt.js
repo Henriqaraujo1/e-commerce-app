@@ -8,6 +8,10 @@ module.exports = class EncryptUtil {
 
         return hash
     }
+
+    async comparePassword(password, comparePassword) {
+        return bcrypt.compare(password, comparePassword)
+    }
     
 
 }
