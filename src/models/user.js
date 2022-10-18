@@ -25,7 +25,7 @@ module.exports = class UserModel {
     }
   }
 
-  async createUser(data) {
+  async NewUser(data) {
     const { email, password } = data;
     const encryptPassword = await EncryptUtilInstance.encrypt(password);
 

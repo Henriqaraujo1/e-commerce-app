@@ -1,7 +1,5 @@
 const client = require("../db/dbConfig");
 const createError = require("http-errors");
-const { readdirSync } = require("fs");
-const { stringify } = require("querystring");
 
 module.exports = class ProductService {
   async findProduct(options) {
