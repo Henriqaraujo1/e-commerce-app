@@ -14,7 +14,7 @@ module.exports = class UserModel {
       const data = await client.query("SELECT * FROM users WHERE email=$1", [
         value,
       ]);
-      console.log(data.rows?.length)
+      console.log(data.rows?.length);
       if (data.rows?.length) {
         return data.rows[0];
       }
@@ -33,7 +33,7 @@ module.exports = class UserModel {
       "INSERT INTO users(email, password) VALUES ($1, $2)",
       [email, encryptPassword]
     );
-    console.log(newUser.rows[0])
+    console.log(newUser.rows[0]);
     if (newUser.rows?.length) {
       return newUser.rows[0];
     }
@@ -50,7 +50,10 @@ module.exports = class UserModel {
 
       const userDbPassword = userPassword.rows[0].password;
 
-      const match = await EncryptUtilInstance.comparePassword(password, userDbPassword);
+      const match = await EncryptUtilInstance.comparePassword(
+        password,
+        userDbPassword
+      );
       // console.log(match)
       return match;
     } catch (err) {
