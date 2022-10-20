@@ -2,6 +2,17 @@ const client = require("../db/dbConfig");
 const createHttpError = require("http-errors");
 
 module.exports = class ProductService {
+  constructor(data = {}) {
+    this.name = data.name;
+    this.perc_sell = data.perc_sell;
+    this.price_buy = data.price_buy;
+    this.price_sell = data.price_sell;
+    this.min_stock = data.min_stock;
+    this.max_stock = data.max_stock;
+    this.id_categoria = data.id_categoria;
+    this.status = data.status;
+  }
+
   async getInfoProduct(data = {}) {
     try {
       const result = await client.query("SELECT * FROM products");
@@ -30,17 +41,17 @@ module.exports = class ProductService {
   }
   async newProduct(data) {
     try {
-        const {
-            name,
-            perc_sell,
-            price_buy,
-            price_sell,
-            min_stock,
-            max_stock,
-            id_categoria,
-            status,
-          } = data;
-          const products =  await client.query(
+      const {
+        name,
+        perc_sell,
+        price_buy,
+        price_sell,
+        min_stock,
+        max_stock,
+        id_categoria,
+        status,
+      } = data;
+      const products = await client.query(
         "INSERT INTO products (name, perc_sell, price_buy, price_sell, min_stock, max_stock, id_categoria, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
         [
           name,
@@ -51,28 +62,29 @@ module.exports = class ProductService {
           max_stock,
           id_categoria,
           status,
-        ])
-        
-        if(products.rows?.length) {
-            return products.rows
-        }
+        ]
+      );
+
+      if (products.rows?.length) {
+        return products.rows;
+      }
     } catch (err) {
       throw createError(500, err);
     }
   }
   async updateProdutct(data) {
     try {
-        const {
-            id,
-            name,
-            perc_sell,
-            price_buy,
-            price_sell,
-            min_stock,
-            max_stock,
-            id_categoria,
-            status,
-          } = data;
+      const {
+        id,
+        name,
+        perc_sell,
+        price_buy,
+        price_sell,
+        min_stock,
+        max_stock,
+        id_categoria,
+        status,
+      } = data;
       const upProduct = await client.query(
         "SELECT * FROM products WHERE id_products = $1",
         [
@@ -85,10 +97,11 @@ module.exports = class ProductService {
           max_stock,
           id_categoria,
           status,
-        ])
-        if(upProduct.rows?.length) {
-            return upProduct.rows
-        }
+        ]
+      );
+      if (upProduct.rows?.length) {
+        return upProduct.rows;
+      }
     } catch (err) {
       throw createError(500, err);
     }
