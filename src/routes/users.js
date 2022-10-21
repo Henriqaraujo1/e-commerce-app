@@ -9,12 +9,12 @@ const UsersServiceInstance = new UsersService();
 module.exports = (app, passport) => {
     app.use("/users", router);
 
-    // router.get("/", UsersServiceInstance.getAllUsers)
+    // router.get("/", UsersServiceInstance.getAllUsers);
     
     router.get("/:userId", async (req, res, next) => {
         const userId = req.params.id;
 
-        const response = await UsersServiceInstance.getUserById(userId)
+        const response = await UsersServiceInstance.getUserId(userId)
 
         if(response) {
             res.status(200).json(response)

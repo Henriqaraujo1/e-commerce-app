@@ -11,7 +11,7 @@ module.exports = class AuthService {
       if (userExists) {
         return createError(409, `Email já existe`);
       }
-      const user = await UserModelInstance.createUser(data);
+      const user = await UserModelInstance.NewUser(email, password);
       console.log(user);
       return user;
     } catch (err) {
