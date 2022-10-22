@@ -10,21 +10,31 @@ const EncryptUtilInstance = new EncryptUtil();
 module.exports = class UsersService {
   async getEmail(data) {
     try {
-      const {value} = data;
+      const { value } = data;
       console.log(data);
       const userInfo = UserModelInstance.getInfoUser(value);
-      if(value === userInfo) {
-        return false
+      if (value === userInfo) {
+        return false;
       } else {
-        const newUser = UserModelInstance.NewUser(value)
+        const newUser = UserModelInstance.NewUser(value);
+        return newUser;
       }
-      console.log(userInfo);
     } catch (err) {
       throw createError(500, err);
     }
   }
 
-  async createUser(data) {
+  async getUser(data) {
+    const {id} = data;
 
+    try {
+      const user = await UserModelInstance.getUserById(id);
+
+      if(!user) {
+        throw createError(404, 'Usuario não encontrado')
+      }
+    } catch (err) {
+      throw createError(500, err)
+    }
   }
 };

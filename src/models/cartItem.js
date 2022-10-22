@@ -66,7 +66,7 @@ module.exports = class CartItemModel {
         return response.rows[0];
       }
 
-      return null
+      return null;
     } catch (err) {
       throw createHttpError(500, err);
     }
