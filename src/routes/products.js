@@ -32,4 +32,20 @@ module.exports = (app) => {
       next(err);
     }
   });
+
+  router.post("/newcategory", async (req, res, next) => {
+    try {
+      const brand = req.body;
+      const response = await ProductServiceInstance.newBrand(brand)
+
+      console.log(response);
+    } catch (error) {}
+  });
+
+  router.post("/newproduct", async (req, res, next) => {
+    const { product } = req.body;
+    console.log(product);
+  });
+  router.put("/updateproduct", async (req, res, next) => {});
+  router.delete("/deleteproduct/:productId", async (req, res, next) => {});
 };

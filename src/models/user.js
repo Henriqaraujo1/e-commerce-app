@@ -14,12 +14,10 @@ module.exports = class UserModel {
       const data = await client.query("SELECT * FROM users WHERE email=$1", [
         value,
       ]);
-      console.log(data.rows?.length);
+      // console.log(data.rows[0]);
       if (data.rows?.length) {
         return data.rows[0];
       }
-
-      return null;
     } catch (err) {
       throw createHttpError(500, err);
     }
@@ -43,12 +41,14 @@ module.exports = class UserModel {
 
   async matchPassword(email, password) {
     try {
-      const userPassword = this.getInfoUser(email);
+      const userPassword = await this.getInfoUser(email);
+
       if (userPassword.rowCount == 0) {
         return false;
       }
+      console.log(userPassword);
 
-      const userDbPassword = userPassword.rows[0].password;
+      const userDbPassword = userPassword.password;
 
       const match = await EncryptUtilInstance.comparePassword(
         password,
@@ -57,7 +57,7 @@ module.exports = class UserModel {
       // console.log(match)
       return match;
     } catch (err) {
-      throw createError(500, err);
+      throw createHttpError(500, err);
     }
   }
 
@@ -79,16 +79,10 @@ module.exports = class UserModel {
 
   async getAllUsers() {
     try {
-      client.query(
-        "SELECT * FROM users ORDER BY id_user ASC",
-        (err, results) => {
-          if (err) {
-            throw err;
-          } else if (results.rows?.length) {
-            return results.rows[0];
-          }
-        }
-      );
+      const allUsers = await client.query("SELECT * FROM users ORDER BY id_user ASC");
+      if(allUsers.rows?.length) {
+        return allUsers.rows[0]
+      }
     } catch (err) {
       throw createError(500, err);
     }
