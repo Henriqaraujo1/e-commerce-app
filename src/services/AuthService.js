@@ -20,9 +20,8 @@ module.exports = class AuthService {
   }
 
   async login(data) {
-    const { email, password } = data;
-
     try {
+      const { email, password } = data;
       const user = await UserModelInstance.getInfoUser(email);
       if (user.email != email) {
         throw createError(401, "Email ou senha incorreto");

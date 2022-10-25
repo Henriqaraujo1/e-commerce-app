@@ -9,6 +9,7 @@ module.exports = (app) => {
 
   router.get("/", async (req, res, next) => {
     try {
+      console.log(req.params.id)
       const { id } = req.user;
 
       const response = await OrderServiceInstance.list(id);

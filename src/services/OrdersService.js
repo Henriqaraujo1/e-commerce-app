@@ -4,7 +4,7 @@ const OrderItemModel = require("../models/orderItem");
 
 module.exports = class OrderService {
   async create(data) {
-    const { idUser } = data;
+    const { idUser, ...total } = data;
     try {
       const Order = new OrderModel();
       const order = await Order.create({ idUser, total });

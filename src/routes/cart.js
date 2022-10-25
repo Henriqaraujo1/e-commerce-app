@@ -4,13 +4,15 @@ const CartService = require("../services/CartService");
 
 const CartServiceInstance = new CartService();
 
-module.exports = (app, exports) => {
+module.exports = (app) => {
   app.use("/carts", router);
 
   router.get("/mine", async (req, res, next) => {
     try {
-      const { id } = req.user;
-
+      console.log(req.body)
+      console.log(req.params.id)
+      const id = req.user
+      console.log(id)
       const response = await CartServiceInstance.loadCart(id);
 
       res.status(200).send(response);

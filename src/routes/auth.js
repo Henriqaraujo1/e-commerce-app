@@ -32,8 +32,7 @@ module.exports = (app, passport) => {
           email: username,
           password,
         });
-        console.log(response);
-        res.status(200).json({message: "login realizado, Vai dormir fio"});
+        res.status(200).json({message: "login realizado"});
       } catch (err) {
         console.log("Login não foi realizado");
         next(err);
