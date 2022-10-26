@@ -36,10 +36,16 @@ module.exports = (app) => {
   router.post("/newcategory", async (req, res, next) => {
     try {
       const brand = req.body;
-      const response = await ProductServiceInstance.newBrand(brand)
 
-      console.log(response);
-    } catch (error) {}
+      const response = await ProductServiceInstance.newBrand(brand);
+      if (response) {
+        res.status(200).json({ message: "Categoria Criada com sucesso" });
+      } else {
+        res.status(409).json({ message: `Categoria já existe` });
+      }
+    } catch (err) {
+      next(err);
+    }
   });
 
   router.post("/newproduct", async (req, res, next) => {

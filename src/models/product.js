@@ -91,22 +91,32 @@ module.exports = class ProductService {
     }
     client.query;
   }
-
-  async createBrand(data) {
-    const brand = data;
-
+  async getBrand(data) {
     try {
-      const statement = pgp.helpers.insert(brand, null, 'category');
+      const statement = "SELECT * FROM category WHERE name = $1";
+      const value = [data.name];
+      const response = await client.query(statement, value);
+
+      if (response.rows?.length) {
+        return response.rows[0];
+      }
+    } catch (err) {
+      throw createHttpError(500, err);
+    }
+  }
+  async createBrand(data) {
+    try {
+
+      const statement =
+        pgp.helpers.insert(data, null, "category") + "RETURNING *";
 
       const response = await client.query(statement);
-      console.log(response)
-      if(response.rows?.length) {
-        response.rows[0]
-      }
 
-      
+      if (response.rows?.length) {
+        return response.rows[0];
+      }
     } catch (err) {
-      throw createHttpError(500, err)
+      throw createHttpError(500, err);
     }
   }
 };
