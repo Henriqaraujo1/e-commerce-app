@@ -1,42 +1,45 @@
 const client = require("../db/dbConfig");
 const createError = require("http-errors");
 
-const ProductModel = require('../models/product')
+const ProductModel = require("../models/product");
 const ProductModelInstance = new ProductModel();
-
 
 module.exports = class ProductService {
   async newProduct(data) {
-    const {...product} = data;
+    const { ...newProducts } = data;
 
     try {
-      const Product = new ProductModel();
-      const product = await Product.createProduct(product)
+      const getProduct = await ProductModelInstance.findProductName(
+        newProducts
+      );
+      // console.log(newProducts)
+      if(getProduct === undefined) {
+        console.log(newProducts);
+        const Product = new ProductModel(newProducts);
+        const product = await Product.createProduct();
 
-      console.log(product);
-
-      console.log(product)
+        return product
+      }
+      
     } catch (err) {
       throw createError(500, err);
     }
   }
 
   async newBrand(data) {
-    const brand = data;
+    try {
+      const brand = data;
+      const getBrand = await ProductModelInstance.getBrand(brand);
+      if (getBrand === undefined) {
+        const createBrand = await ProductModelInstance.createBrand(brand);
 
-    try{
-      const createBrand = await ProductModelInstance.createBrand(brand);
-
-      
-      return createBrand;
-
-    } catch(err) {
-      throw createError(500, err)
+        return createBrand;
+      }
+    } catch (err) {
+      throw createError(500, err);
     }
   }
-
 };
-
 
 // async findProduct(options) {
 //   try {

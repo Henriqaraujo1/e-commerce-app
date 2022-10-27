@@ -33,19 +33,34 @@ module.exports = (app) => {
     }
   });
 
+  router.post("/newproduct", async (req, res, next) => {
+    const { ...product } = req.body;
+
+    const response = await ProductServiceInstance.newProduct(product);
+
+    if(response) {
+      res.status(200).json({message: 'Produto adicionado com sucesso'})
+    } else {
+      res.status(409).json({ message: 'Produto já existe'})
+    }
+    
+  });
+
   router.post("/newcategory", async (req, res, next) => {
     try {
       const brand = req.body;
-      const response = await ProductServiceInstance.newBrand(brand)
 
-      console.log(response);
-    } catch (error) {}
+      const response = await ProductServiceInstance.newBrand(brand);
+      if (response) {
+        res.status(200).json({ message: "Categoria Criada com sucesso" });
+      } else {
+        res.status(409).json({ message: `Categoria já existe` });
+      }
+    } catch (err) {
+      next(err);
+    }
   });
 
-  router.post("/newproduct", async (req, res, next) => {
-    const { product } = req.body;
-    console.log(product);
-  });
   router.put("/updateproduct", async (req, res, next) => {});
   router.delete("/deleteproduct/:productId", async (req, res, next) => {});
 };

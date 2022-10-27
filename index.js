@@ -9,7 +9,7 @@ async function startServer() {
  controllers(app);
 
  app.listen(PORT, () => {
-    console.log(`S   rvidor está rodando na PORTA ${PORT}`)
+    console.log(`Servidor está rodando na PORTA ${PORT}`)
  })
 }
 startServer();
