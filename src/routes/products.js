@@ -9,9 +9,13 @@ module.exports = (app) => {
 
   router.get("/", async (req, res, next) => {
     try {
-      const product = await ProductServiceInstance.findProduct();
-
-      res.status(200).json(product);
+      const response = await ProductServiceInstance.findProduct();
+      if(response) {
+        res.status(200).json(response);
+      } else {
+        res.status(404).json({messageError: "Erro ao carregar os produtos"})
+      }
+      
     } catch (err) {
       next(err);
     }

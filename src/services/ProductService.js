@@ -13,14 +13,13 @@ module.exports = class ProductService {
         newProducts
       );
       // console.log(newProducts)
-      if(getProduct === undefined) {
+      if (getProduct === undefined) {
         console.log(newProducts);
         const Product = new ProductModel(newProducts);
         const product = await Product.createProduct();
 
-        return product
+        return product;
       }
-      
     } catch (err) {
       throw createError(500, err);
     }
@@ -39,24 +38,19 @@ module.exports = class ProductService {
       throw createError(500, err);
     }
   }
+  async findProduct() {
+    try {
+      const findProduct = ProductModelInstance.getProduct();
+      if (!findProduct) {
+        throw createError(404, "Produto não encontrado");
+      } else {
+        return findProduct;
+      }
+    } catch (err) {
+      throw createError(500, err);
+    }
+  }
 };
-
-// async findProduct(options) {
-//   try {
-//     client.query(
-//       "SELECT * FROM products ORDER BY id_prod",
-//       (err, products) => {
-//         if (err) {
-//           throw createError(404, "Not Found");
-//         } else {
-//           res.status(201).json(products.rows);
-//         }
-//       }
-//     );
-//   } catch (err) {
-//     throw createError(500, err);
-//   }
-// }
 
 // async findProductId(data) {
 //   const id = data;
