@@ -2,7 +2,7 @@ const client = require("../db/dbConfig");
 const createHttpError = require("http-errors");
 const pgp = require("pg-promise")({ capSQL: true });
 
-module.exports = class ProductService {
+module.exports = class ProductModel {
   constructor(data = {}) {
     this.name = data.name;
     this.perc_sell = data.perc_sell;
@@ -26,15 +26,15 @@ module.exports = class ProductService {
     }
   }
 
-  async findProductId(data) {
+  async findProductName(data) {
     try {
-      const id = data;
-      const resultProductId = await client.query(
-        `SELECT * FROM products WHERE id_products = ${id}`
-      );
+      const value = [data.name];
+      const statement = "SELECT * FROM products WHERE name = $1";
 
-      if (resultProductId.rows?.length) {
-        return resultProductId.rows;
+      const response = await client.query(statement, value)
+      console.log(response);
+      if (response.rows?.length) {
+        return response.rows[0];
       }
     } catch (err) {
       throw createHttpError(500, err);
@@ -42,14 +42,14 @@ module.exports = class ProductService {
   }
   async createProduct() {
     try {
-      const { items, ...product } = this;
-
+      const data = {...this}
+      console.log(data)
       const statement =
-        pgp.helpers.insert(product, null, "products") + " RETURNING *";
+        pgp.helpers.insert(data, null, "products") + " RETURNING *";
 
       const response = await client.query(statement);
 
-      if (result.rows?.length) {
+      if (response.rows?.length) {
         Object.assign(this, response.rows[0]);
         return response.rows[0];
       }
@@ -106,7 +106,6 @@ module.exports = class ProductService {
   }
   async createBrand(data) {
     try {
-
       const statement =
         pgp.helpers.insert(data, null, "category") + "RETURNING *";
 

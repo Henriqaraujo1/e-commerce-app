@@ -6,15 +6,21 @@ const ProductModelInstance = new ProductModel();
 
 module.exports = class ProductService {
   async newProduct(data) {
-    const { ...product } = data;
+    const { ...newProducts } = data;
 
     try {
-      const Product = new ProductModel();
-      const product = await Product.createProduct(product);
+      const getProduct = await ProductModelInstance.findProductName(
+        newProducts
+      );
+      // console.log(newProducts)
+      if(getProduct === undefined) {
+        console.log(newProducts);
+        const Product = new ProductModel(newProducts);
+        const product = await Product.createProduct();
 
-      console.log(product);
-
-      console.log(product);
+        return product
+      }
+      
     } catch (err) {
       throw createError(500, err);
     }
@@ -23,13 +29,12 @@ module.exports = class ProductService {
   async newBrand(data) {
     try {
       const brand = data;
-      const getBrand = await ProductModelInstance.getBrand(brand)
+      const getBrand = await ProductModelInstance.getBrand(brand);
       if (getBrand === undefined) {
-        const createBrand = await ProductModelInstance.createBrand(brand)
+        const createBrand = await ProductModelInstance.createBrand(brand);
 
         return createBrand;
       }
-      
     } catch (err) {
       throw createError(500, err);
     }
