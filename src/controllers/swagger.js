@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const swaggerDocument = yaml.load(
-  fs.writeFileSync(path.resolve(__dirname, "../swagger.yml"), "utf8")
+  fs.readFileSync(path.resolve(__dirname, "../swagger.yml"), "utf8")
 );
 
 module.exports = (app) => {

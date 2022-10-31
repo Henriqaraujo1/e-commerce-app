@@ -14,13 +14,6 @@ module.exports = class ProductModel {
     this.status = data.status;
   }
 
-  // updateValue() {
-  //   const newIncreaseValue = this.price_buy * (this.perc_sell / 100);
-  //   console.log(newIncreaseValue);
-  //   this.price_sell = this.price_buy + newIncreaseValue;
-  //   console.log(this.price_sell)
-  // }
-
   async getProduct(data = {}) {
     try {
       const statement = "SELECT * FROM products ORDER BY id_product ASC";
@@ -53,9 +46,9 @@ module.exports = class ProductModel {
       const newIncreaseValue = this.price_buy * (this.perc_sell / 100);
       console.log(newIncreaseValue);
       this.price_sell = this.price_buy + newIncreaseValue;
-      console.log(this.price_sell)
-      const data = { ...this};
-      
+      console.log(this.price_sell);
+      const data = { ...this };
+
       const statement =
         pgp.helpers.insert(data, null, "products") + " RETURNING *";
 
