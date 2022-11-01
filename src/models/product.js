@@ -7,19 +7,20 @@ module.exports = class ProductModel {
     this.name = data.name;
     this.perc_sell = data.perc_sell;
     this.price_buy = data.price_buy;
-    this.price_sell = data.price_sell;
+    this.price_sell;
     this.min_stock = data.min_stock;
     this.max_stock = data.max_stock;
     this.id_categoria = data.id_categoria;
     this.status = data.status;
   }
 
-  async getInfoProduct(data = {}) {
+  async getProduct(data = {}) {
     try {
-      const result = await client.query("SELECT * FROM products");
+      const statement = "SELECT * FROM products ORDER BY id_product ASC";
+      const response = await client.query(statement);
 
-      if (result.rows?.length) {
-        return result.rows;
+      if (response.rows?.length) {
+        return response.rows;
       }
     } catch (err) {
       throw createHttpError(500, err);
@@ -31,7 +32,7 @@ module.exports = class ProductModel {
       const value = [data.name];
       const statement = "SELECT * FROM products WHERE name = $1";
 
-      const response = await client.query(statement, value)
+      const response = await client.query(statement, value);
       console.log(response);
       if (response.rows?.length) {
         return response.rows[0];
@@ -42,8 +43,12 @@ module.exports = class ProductModel {
   }
   async createProduct() {
     try {
-      const data = {...this}
-      console.log(data)
+      const newIncreaseValue = this.price_buy * (this.perc_sell / 100);
+      console.log(newIncreaseValue);
+      this.price_sell = this.price_buy + newIncreaseValue;
+      console.log(this.price_sell);
+      const data = { ...this };
+
       const statement =
         pgp.helpers.insert(data, null, "products") + " RETURNING *";
 

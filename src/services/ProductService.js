@@ -5,6 +5,18 @@ const ProductModel = require("../models/product");
 const ProductModelInstance = new ProductModel();
 
 module.exports = class ProductService {
+  async findProduct() {
+    try {
+      const findProduct = ProductModelInstance.getProduct();
+      if (!findProduct) {
+        throw createError(404, "Produto não encontrado");
+      } else {
+        return findProduct;
+      }
+    } catch (err) {
+      throw createError(500, err);
+    }
+  }
   async newProduct(data) {
     const { ...newProducts } = data;
 
@@ -13,14 +25,13 @@ module.exports = class ProductService {
         newProducts
       );
       // console.log(newProducts)
-      if(getProduct === undefined) {
+      if (getProduct === undefined) {
         console.log(newProducts);
         const Product = new ProductModel(newProducts);
         const product = await Product.createProduct();
 
-        return product
+        return product;
       }
-      
     } catch (err) {
       throw createError(500, err);
     }
@@ -39,59 +50,31 @@ module.exports = class ProductService {
       throw createError(500, err);
     }
   }
+
+  async findProductName(data) {
+    try {
+      const findProductName = await ProductModelInstance.findProductName(data);
+      if (!findProductName) {
+        throw createError(404, "Produto não encontrado");
+      } else {
+        return findProductName;
+      }
+    } catch (err) {
+      throw createError(500, err);
+    }
+  }
+
+  async deleteProduct(id) {
+    try {
+      const productId = await ProductModelInstance.deleteProduct(id)
+
+      if(!productId) {
+        throw(404, "Produto não encontrado")
+      } else {
+        return productId
+      }
+    } catch (err) {
+      return createError(500, err);
+    }
+  }
 };
-
-// async findProduct(options) {
-//   try {
-//     client.query(
-//       "SELECT * FROM products ORDER BY id_prod",
-//       (err, products) => {
-//         if (err) {
-//           throw createError(404, "Not Found");
-//         } else {
-//           res.status(201).json(products.rows);
-//         }
-//       }
-//     );
-//   } catch (err) {
-//     throw createError(500, err);
-//   }
-// }
-
-// async findProductId(data) {
-//   const id = data;
-//   client.query(
-//     `SELECT * FROM products WHERE id_product = ${id}`,
-//     (err, productId) => {
-//       try {
-//         if (err) {
-//           return createError(404, err);
-//         }
-//         if (productId.rows?.length) {
-//           return productId.rows[0];
-//         }
-//         return null;
-//       } catch (err) {
-//         throw createError(500, err);
-//       }
-//     }
-//   );
-// }
-// async deleteProduct(id) {
-//   const valueId = parseInt(id);
-//   try {
-//     client.query(
-//       `DELETE * FROM products WHERE id_products = ${valueId}`,
-//       (err, delProdutc) => {
-//         if (err) {
-//           return createError(404, "Product not find");
-//         } else {
-//           return `Product with id: ${delProdutc.rows[0].id}`;
-//         }
-//       }
-//     );
-//   } catch (err) {
-//     return createError(500, err);
-//   }
-//   client.query;
-// }
