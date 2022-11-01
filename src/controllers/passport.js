@@ -22,7 +22,7 @@ module.exports = (app) => {
         email: username,
         password,
       });
-      console.log(user);
+      // console.log(user);
       return done(null, user);
     })
   );
