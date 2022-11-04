@@ -4,8 +4,13 @@
   "description": "e-commerce app developer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./src/test/userTest.js",
     "start": "nodemon --watch index.js --watch server/"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.1.0"
   },
   "author": "",
   "license": "ISC",
@@ -13,8 +18,6 @@
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
-    "chai": "^4.3.6",
-    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
@@ -22,8 +25,8 @@
     "fs": "^0.0.1-security",
     "http-errors": "^2.0.0",
     "js-yaml": "^4.1.0",
-    "mocha": "^10.1.0",
     "moment": "^2.29.4",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
