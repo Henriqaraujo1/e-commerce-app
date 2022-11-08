@@ -12,9 +12,8 @@ module.exports = class UserModel {
     try {
       const value = email;
       const data = await client.query("SELECT * FROM users WHERE email=$1", [
-        value,
+        value
       ]);
-      // console.log(data.rows[0]);
       if (data.rows?.length) {
         return data.rows[0];
       }
@@ -31,12 +30,9 @@ module.exports = class UserModel {
       "INSERT INTO users(email, password) VALUES ($1, $2)",
       [email, encryptPassword]
     );
-    console.log(newUser.rows[0]);
     if (newUser.rows?.length) {
       return newUser.rows[0];
     }
-
-    return null;
   }
 
   async matchPassword(email, password) {
@@ -46,7 +42,6 @@ module.exports = class UserModel {
       if (userPassword.rowCount == 0) {
         return false;
       }
-      console.log(userPassword);
 
       const userDbPassword = userPassword.password;
 

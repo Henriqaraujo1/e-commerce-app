@@ -7,12 +7,10 @@ module.exports = class AuthService {
     const { email, password } = data;
     try {
       const userExists = await UserModelInstance.getInfoUser(email);
-      console.log(userExists);
       if (userExists) {
         return createError(409, `Email já existe`);
       }
-      const user = await UserModelInstance.NewUser(email, password);
-      console.log(user);
+      const user = await UserModelInstance.NewUser(data);
       return user;
     } catch (err) {
       throw createError(500, err);
