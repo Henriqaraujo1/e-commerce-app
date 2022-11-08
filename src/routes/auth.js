@@ -17,7 +17,6 @@ module.exports = (app, passport) => {
         message: `Usuario criado com sucesso, E-mail utilizado ${response}`,
       });
     } catch (err) {
-      res.status(409).json(`Email Não encontrado`);
       next(err);
     }
   });
