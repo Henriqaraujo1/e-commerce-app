@@ -4,11 +4,7 @@
   "description": "e-commerce app developer",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "test": "mocha --timeout 10000",
-=======
-    "test": "mocha ./src/test/userTest.js",
->>>>>>> fd4cfc507c8d8ae17e0fb15be9da3842eb9517d2
+    "test": "mocha ./src/test/*.spec.js",
     "start": "nodemon --watch index.js --watch server/"
   },
   "devDependencies": {

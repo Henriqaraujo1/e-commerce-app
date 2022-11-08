@@ -4,7 +4,6 @@ require("dotenv").config({ path: "./src/configs/example.env" });
 const controllers = require("./src/controllers/index");
 
 const { PORT } = require("./src/configs/config");
-const { config } = require("dotenv");
 const morgan = require('morgan')
 
 // if (config("NODE_ENV") !== "test") {
