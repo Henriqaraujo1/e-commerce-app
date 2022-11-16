@@ -1,4 +1,4 @@
-const client = require("../db/dbConfig");
+
 
 const createError = require("http-errors");
 
@@ -25,32 +25,31 @@ module.exports = class UsersService {
   }
 
   async getUser(data) {
-    const {id} = data;
+    const { id } = data;
 
     try {
       const user = await UserModelInstance.getUserById(id);
 
-      if(!user) {
-        throw createError(404, 'Usuario não encontrado')
+      if (!user) {
+        throw createError(404, "Usuario não encontrado");
       }
 
-      return user
+      return user;
     } catch (err) {
-      throw createError(500, err)
+      throw createError(500, err);
     }
   }
 
   async getAllUsers() {
     try {
       const users = await UserModelInstance.getAllUsers();
-      if(!users) {
-        throw createError(404, 'Usuario não encontrado')
+      if (!users) {
+        throw createError(404, "Usuario não encontrado");
+      } else {
+        return users;
       }
-
-      return users;
-
     } catch (err) {
-      throw createError(500, err)
+      throw createError(500, err);
     }
   }
 };

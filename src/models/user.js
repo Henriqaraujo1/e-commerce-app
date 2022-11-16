@@ -1,4 +1,4 @@
-const createHttpError = require("http-errors");
+const createError = require("http-errors");
 const client = require("../db/dbConfig");
 
 const EncryptUtil = require("../utils/bcrypt");
@@ -12,13 +12,13 @@ module.exports = class UserModel {
     try {
       const value = email;
       const data = await client.query("SELECT * FROM users WHERE email=$1", [
-        value
+        value,
       ]);
       if (data.rows?.length) {
         return data.rows[0];
       }
     } catch (err) {
-      throw createHttpError(500, err);
+      throw createError(500, err);
     }
   }
 
@@ -52,7 +52,7 @@ module.exports = class UserModel {
       // console.log(match)
       return match;
     } catch (err) {
-      throw createHttpError(500, err);
+      throw createError(500, err);
     }
   }
 
@@ -74,9 +74,11 @@ module.exports = class UserModel {
 
   async getAllUsers() {
     try {
-      const allUsers = await client.query("SELECT * FROM users ORDER BY id_user ASC");
-      if(allUsers.rows?.length) {
-        return allUsers.rows[0]
+      const statement = "SELECT * FROM users ORDER BY id_user ASC";
+      const response = await client.query(statement);
+
+      if (response.rows?.length) {
+        return response.rows;
       }
     } catch (err) {
       throw createError(500, err);

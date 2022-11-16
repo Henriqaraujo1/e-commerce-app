@@ -22,8 +22,7 @@ module.exports = class CartModel {
       if (response.rows?.length) {
         return response.rows[0];
       }
-
-      return null;
+      
     } catch (err) {
       throw createHttpError(500, err);
     }

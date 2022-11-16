@@ -9,7 +9,7 @@ const UsersServiceInstance = new UsersService();
 module.exports = (app, passport) => {
   app.use("/users", router);
 
-  router.get("/allusers", async (req, res, next) => {
+  router.get("/", async (req, res, next) => {
     try {
       const response = await UsersServiceInstance.getAllUsers();
       if (response) {
